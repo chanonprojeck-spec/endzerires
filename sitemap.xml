@@ -2,18 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://user.domain/</loc>
+    <loc>https://https://sanchao.online//</loc>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://user.domain/about.html</loc>
+    <loc>https://https://sanchao.online//about.html</loc>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://user.domain/contact.html</loc>
+    <loc>https://https://sanchao.online//contact.html</loc>
     <priority>0.8</priority>
   </url>
 
 </urlset>
+
