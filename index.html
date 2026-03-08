@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ของดีอำเภอเมืองตรัง - Welcome to Mueang Trang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS Reset & Global Styles --- */
+        :root {
+            /* ชุดสีพาสเทลใหม่ */
+            --primary-color: #7ab8bf; /* สีฟ้าอมเขียวพาสเทล (สำหรับปุ่ม) */
+            --secondary-color: #a594c7; /* สีม่วงพาสเทล (สำหรับหัวข้อ, hover) */
+            --bg-light: #fcf7fa; /* สีพื้นหลังขาวอมชมพูม่วงจางๆ */
+            --text-dark: #4a4a4a; /* สีเทาเข้ม (นุ่มกว่าสีดำสนิท) */
+            --text-light: #7a7280; /* สีเทาม่วง (สำหรับข้อความรอง) */
+            --white: #ffffff;
+            --header-gradient: linear-gradient(135deg, #f3e5f5, #f8bbd0); /* ไล่สีส่วนหัว ม่วงอ่อน->ชมพูอ่อน */
+            --footer-gradient: linear-gradient(135deg, #9575cd, #ba68c8); /* ไล่สีส่วนท้าย ม่วงเข้มขึ้น */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Kanit', sans-serif;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header Section --- */
+        header {
+            background: var(--header-gradient); /* ใช้การไล่สีพาสเทล */
+            text-align: center;
+            padding: 80px 20px 60px;
+            border-bottom: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .header-content h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--primary-color); /* สีฟ้าพาสเทล */
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            margin-bottom: 5px;
+        }
+
+        .header-content h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .motto-box {
+            background-color: rgba(255, 255, 255, 0.7); /* พื้นหลังขาวโปร่งแสง */
+            padding: 30px;
+            border-radius: 20px;
+            display: inline-block;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(165, 148, 199, 0.15); /* เงาสีม่วงอ่อน */
+            border: 2px solid #e1bee7; /* ขอบสีม่วงอ่อน */
+        }
+        
+        .motto-box h3 {
+            color: var(--secondary-color); /* หัวข้อสีม่วงพาสเทล */
+            margin-bottom: 15px;
+        }
+
+        .motto-box p {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #666;
+        }
+
+        /* --- About Section --- */
+        .about-section {
+            padding: 70px 0;
+            background-color: var(--white);
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--secondary-color); /* หัวข้อสีม่วงพาสเทล */
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 3px;
+            background: var(--secondary-color); /* เส้นขีดสีม่วงพาสเทล */
+            margin: 10px auto 0;
+            border-radius: 2px;
+            opacity: 0.6;
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            text-align: left;
+        }
+
+        .map-image {
+            flex: 1 1 400px;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(165, 148, 199, 0.2);
+            overflow: hidden;
+            border: 3px solid rgba(255,255,255,0.8);
+        }
+
+        .map-image img {
+            width: 100%;
+            display: block;
+        }
+
+        .history-text {
+            flex: 1 1 500px;
+            padding: 30px;
+            background: #f3e5f5; /* พื้นหลังสีม่วงอ่อนจางๆ */
+            border-radius: 20px;
+            border-left: 5px solid var(--secondary-color); /* เส้นขอบซ้ายสีม่วง */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        
+        .history-text h3 { color: var(--secondary-color); }
+
+        /* --- Tambon Grid Section --- */
+        .tambon-section {
+            padding: 70px 0;
+        }
+
+        .tambon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 35px;
+        }
+
+        /* Card Design */
+        .tambon-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(165, 148, 199, 0.1); /* เงาสีม่วงอ่อน */
+            transition: all 0.3s ease;
+            border: 1px solid #f0e6f5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tambon-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 30px rgba(165, 148, 199, 0.25);
+            border-color: var(--primary-color); /* hover แล้วขอบเป็นสีฟ้าพาสเทล */
+        }
+
+        .card-img-wrapper {
+            height: 220px;
+            overflow: hidden;
+            background-color: #e1bee7; /* สีรองพื้นม่วงอ่อน */
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .tambon-card:hover .card-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tambon-name {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .tambon-slogan {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .highlights-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--secondary-color); /* หัวข้อของดี สีม่วงพาสเทล */
+        }
+
+        .good-stuff-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .good-stuff-list li {
+            padding-left: 25px;
+            position: relative;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .good-stuff-list li::before {
+            content: '✿'; /* เปลี่ยนเป็นดอกไม้ให้เข้ากับธีม */
+            color: var(--primary-color); /* ดอกไม้สีฟ้าพาสเทล */
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .btn-details {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color); /* ปุ่มสีฟ้าพาสเทล */
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(122, 184, 191, 0.3);
+        }
+
+        .btn-details:hover {
+            background-color: var(--secondary-color); /* hover แล้วเป็นสีม่วงพาสเทล */
+            box-shadow: 0 6px 15px rgba(165, 148, 199, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--footer-gradient); /* พื้นหลังไล่สีม่วงเข้มขึ้น */
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .footer-info h3 { color: var(--white); }
+
+        .footer-credits {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+            color: #e1bee7; /* สีข้อความ footer เป็นม่วงอ่อน */
+        }
+
+        .footer-credits h4 {
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        /* --- Modal Popup --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(100, 80, 120, 0.6); /* พื้นหลัง modal สีม่วงเข้มโปร่งแสง */
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {transform: translateY(50px); opacity: 0;}
+            to {transform: translateY(0); opacity: 1;}
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: var(--white);
+            background: rgba(165, 148, 199, 0.7); /* ปุ่มปิดสีม่วงโปร่งแสง */
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
+        }
+
+        .close-modal:hover {
+            background: rgba(165, 148, 199, 1);
+            transform: rotate(90deg);
+        }
+
+        .modal-img-container {
+            height: 350px;
+            overflow: hidden;
+        }
+        
+        .modal-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 35px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            color: var(--secondary-color); /* หัวข้อ modal สีม่วงพาสเทล */
+            margin-bottom: 15px;
+        }
+
+        .modal-desc {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content h1 { font-size: 2.2rem; }
+            .section-title { font-size: 1.8rem; }
+            .about-content { flex-direction: column; }
+            .map-image, .history-text { flex: 1 1 100%; max-width: 100%; }
+            .modal-img-container { height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <h1>ยินดีต้อนรับสู่อำเภอเมืองตรัง</h1>
+            <h2>Welcome to Mueang Trang District | 歡迎來到董里市</h2>
+            
+            <div class="motto-box">
+                <h3>คำขวัญอำเภอเมืองตรัง</h3>
+                <p>"เมืองผู้นำยางพารา เทิดรับฎาษฎาประดิษฐ์ เมืองมิตรร่วมธรรม หมูย่างติ่มซำรสเลิศ เปิดประตูสู่อันดามัน สวรรค์นักท่องเที่ยว"</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="about-section">
+        <div class="container">
+            <h2 class="section-title">ประวัติความเป็นมาและภูมิประเทศ</h2>
+            <div class="about-content">
+                <div class="map-image">
+                    <img src="https://via.placeholder.com/500x350/e1bee7/7ab8bf?text=Map+of+Mueang+Trang" alt="แผนที่อำเภอเมืองตรัง">
+                </div>
+                <div class="history-text">
+                    <h3 style="margin-bottom: 15px;">ข้อมูลสังเขป</h3>
+                    <p><strong>ประวัติ:</strong> อำเภอเมืองตรัง มีประวัติการตั้งรกรากริมฝั่งแม่น้ำตรังมาตั้งแต่สมัยโบราณ เดิมชื่อ "อำเภอบางรัก" และเปลี่ยนชื่อเป็น "อำเภอเมืองตรัง" ในปี พ.ศ. 2481 เป็นศูนย์กลางความเจริญของจังหวัดตรังมายาวนาน</p>
+                    <br>
+                    <p><strong>ภูมิประเทศ:</strong> สภาพพื้นที่โดยทั่วไปเป็นที่ราบสลับกับที่ดอน มีแม่น้ำตรังไหลผ่าน อุดมสมบูรณ์เหมาะแก่การทำเกษตรกรรม และมีทัศนียภาพที่สวยงามของเทือกเขาบรรทัดในระยะไกล</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tambon-section">
+        <div class="container">
+            <h2 class="section-title" style="display: block; text-align: center;">ของดี 15 ตำบล</h2>
+            
+            <div class="tambon-grid">
+                
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?clocktower,trang" alt="ตำบลทับเที่ยง"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">1. ตำบลทับเที่ยง</h3>
+                        <p class="tambon-slogan">"หัวใจเมืองตรัง"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>หมูย่างเมืองตรัง (สูตรดั้งเดิม)</li><li>หอนาฬิกาจังหวัดตรัง</li><li>ตึกชิโนโปรตุกีส</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลทับเที่ยง (Thap Thiang)" 
+                            data-img="https://source.unsplash.com/1200x800/?city,asia"
+                            data-desc="เป็นศูนย์กลางทางเศรษฐกิจ การค้า และการบริหารของจังหวัดตรัง มีสถาปัตยกรรมเก่าแก่แบบชิโนโปรตุกีสที่สวยงาม แหล่งรวมร้านอาหารพื้นเมืองชื่อดัง ทั้งหมูย่าง ติ่มซำ และเค้กเมืองตรัง นักท่องเที่ยวนิยมมาเดินชมเมืองและถ่ายรูปกับหอนาฬิกา">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                 <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?park,lake" alt="ตำบลนาพละ"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">2. ตำบลนาพละ</h3>
+                        <p class="tambon-slogan">"ธรรมชาติร่มรื่น สวนสวย"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>สวนสมเด็จย่า 95 (ทุ่งน้ำผุด)</li><li>งานจักสานไม้ไผ่</li><li>ผักปลอดสารพิษ</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลนาพละ (Na Phla)" 
+                            data-img="https://source.unsplash.com/1200x800/?nature,pond"
+                            data-desc="โดดเด่นด้วย 'ทุ่งน้ำผุด' หรือ สวนสาธารณะสมเด็จพระศรีนครินทร์ 95 ซึ่งเป็นแหล่งน้ำซับธรรมชาติที่มีน้ำใสสะอาดตลอดทั้งปี เป็นสถานที่พักผ่อนหย่อนใจยอดนิยม นอกจากนี้ยังมีกลุ่มอาชีพจักสานและเกษตรกรรมที่เข้มแข็ง">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?mosque,building" alt="ตำบลบ้านควน"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">3. ตำบลบ้านควน</h3>
+                        <p class="tambon-slogan">"วิถีมุสลิม ถิ่นอาหารอร่อย"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>มัสยิดบ้านควน</li><li>โรตีและแกงแพะ</li><li>ไก่ย่างสมุนไพร</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลบ้านควน (Ban Khuan)" 
+                            data-img="https://source.unsplash.com/1200x800/?islamic,food"
+                            data-desc="เป็นชุมชนที่มีพี่น้องชาวไทยมุสลิมอาศัยอยู่หนาแน่น มีวัฒนธรรมการกินที่เป็นเอกลักษณ์ โดยเฉพาะร้านน้ำชา โรตี และอาหารมุสลิมรสเลิศ มีมัสยิดที่สวยงามและเป็นศูนย์รวมจิตใจของชุมชน">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+                
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?ricefield,farm" alt="ตำบลนาบินหลา"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">4. ตำบลนาบินหลา</h3>
+                        <p class="tambon-slogan">"เกษตรผสมผสาน ยางพาราชั้นดี"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>ศูนย์เรียนรู้เศรษฐกิจพอเพียง</li><li>สวนยางพารา</li><li>ผลไม้ตามฤดูกาล</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลนาบินหลา (Na Bin La)" 
+                            data-img="https://source.unsplash.com/1200x800/?rubber,tree"
+                            data-desc="พื้นที่ส่วนใหญ่เป็นพื้นที่เกษตรกรรม มีการทำสวนยางพาราและสวนปาล์มน้ำมัน เป็นแหล่งเรียนรู้ด้านเศรษฐกิจพอเพียงที่มีชื่อเสียง มีการรวมกลุ่มเกษตรกรแปรรูปผลิตภัณฑ์ทางการเกษตร">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?campus,university" alt="ตำบลควนปริง"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">5. ตำบลควนปริง</h3>
+                        <p class="tambon-slogan">"แหล่งการศึกษา หัตถกรรมเตยปาหนัน"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>ม.สงขลานครินทร์ (ตรัง)</li><li>ผลิตภัณฑ์จักสานเตยปาหนัน</li><li>ขนมพื้นบ้าน</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลควนปริง (Khuan Pring)" 
+                            data-img="https://source.unsplash.com/1200x800/?weaving,craft"
+                            data-desc="เป็นที่ตั้งของสถาบันการศึกษาชั้นนำ คือ มหาวิทยาลัยสงขลานครินทร์ วิทยาเขตตรัง มีชื่อเสียงด้านหัตถกรรมพื้นบ้าน โดยเฉพาะการนำ 'เตยปาหนัน' มาจักสานเป็นเสื่อ กระเป๋า และของที่ระลึกที่สวยงามและทนทาน">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+                
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?noodle,thai" alt="ตำบลนาโยงใต้"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">6. ตำบลนาโยงใต้</h3>
+                        <p class="tambon-slogan">"รสเด็ดขนมจีน ถิ่นวัฒนธรรม"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>ขนมจีนน้ำยาปักษ์ใต้</li><li>การละเล่นพื้นบ้าน</li><li>กลุ่มทอผ้า (พื้นที่เชื่อมต่อ)</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลนาโยงใต้ (Na Yong Tai)" 
+                            data-img="https://source.unsplash.com/1200x800/?spicy,food"
+                            data-desc="มีชื่อเสียงเรื่องอาหารพื้นเมือง โดยเฉพาะขนมจีนน้ำยาปักษ์ใต้รสจัดจ้าน เป็นตำบลที่ยังคงวิถีชีวิตดั้งเดิมและวัฒนธรรมปักษ์ใต้ไว้อย่างเหนียวแน่น มีความเชื่อมโยงกับแหล่งทอผ้านาหมื่นศรีในอำเภอใกล้เคียง">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?stadium,sport" alt="ตำบลบางรัก"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">7. ตำบลบางรัก</h3>
+                        <p class="tambon-slogan">"กีฬาก้าวไกล ริมน้ำตรัง"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>สนามกีฬาจังหวัดตรัง</li><li>ร้านอาหารริมแม่น้ำตรัง</li><li>ศาลเจ้าศักดิ์สิทธิ์</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลบางรัก (Bang Rak)" 
+                            data-img="https://source.unsplash.com/1200x800/?river,bridge"
+                            data-desc="เป็นที่ตั้งของสนามกีฬาจังหวัดตรังที่ได้มาตรฐาน พื้นที่ติดกับแม่น้ำตรังทำให้มีทัศนียภาพสวยงาม และเป็นแหล่งรวมร้านอาหารบรรยากาศดีริมน้ำ เหมาะแก่การพักผ่อนและรับประทานอาหารยามเย็น">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?airport,plane" alt="ตำบลโคกหล่อ"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">8. ตำบลโคกหล่อ</h3>
+                        <p class="tambon-slogan">"ประตูสู่ตรัง ป่าในเมือง"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>ท่าอากาศยานตรัง</li><li>สวนพฤกษศาสตร์ทุ่งค่าย</li><li>สะพานเรือนยอดไม้ (Canopy Walk)</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลโคกหล่อ (Khok Lo)" 
+                            data-img="https://source.unsplash.com/1200x800/?forest,bridge"
+                            data-desc="เป็นตำบลหน้าด่านเพราะเป็นที่ตั้งของสนามบินตรัง สถานที่ท่องเที่ยวสำคัญคือ 'สวนพฤกษศาสตร์ภาคใต้ (ทุ่งค่าย)' ซึ่งมีเส้นทางศึกษาธรรมชาติและสะพานเรือนยอดไม้ให้นักท่องเที่ยวได้สัมผัสป่าดิบชื้นอย่างใกล้ชิด">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?sweets,dessert" alt="ตำบลนาโต๊ะหมิง"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">9. ตำบลนาโต๊ะหมิง</h3>
+                        <p class="tambon-slogan">"ภูมิปัญญาชาวบ้าน ขนมไทย"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>กลุ่มทำขนมไทยโบราณ</li><li>หัตถกรรมจากวัสดุธรรมชาติ</li><li>เกษตรอินทรีย์</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลนาโต๊ะหมิง (Na To Ming)" 
+                            data-img="https://source.unsplash.com/1200x800/?thai,kitchen"
+                            data-desc="ชุมชนที่มีความเข้มแข็งในการสืบสานภูมิปัญญา มีกลุ่มแม่บ้านที่รวมตัวกันทำขนมไทยและอาหารแปรรูปที่มีรสชาติดั้งเดิม รวมถึงมีการทำการเกษตรแบบผสมผสานตามแนวเศรษฐกิจพอเพียง">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?wetland,river" alt="ตำบลหนองตรุด"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">10. ตำบลหนองตรุด</h3>
+                        <p class="tambon-slogan">"บริหารจัดการน้ำ แหล่งปลาชุม"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>โครงการแก้มลิงหนองตรุด</li><li>การเลี้ยงปลากระชัง</li><li>พื้นที่ชุ่มน้ำดูนก</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลหนองตรุด (Nong Trud)" 
+                            data-img="https://source.unsplash.com/1200x800/?floodgate,water"
+                            data-desc="เป็นพื้นที่สำคัญในการบริหารจัดการน้ำของจังหวัดตรัง มีโครงการแก้มลิงเพื่อป้องกันน้ำท่วม สภาพพื้นที่เป็นที่ลุ่มน้ำอุดมสมบูรณ์ จึงเป็นแหล่งเลี้ยงปลาในกระชังและแหล่งประมงพื้นบ้านที่สำคัญ">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?mountain,durian" alt="ตำบลน้ำผุด"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">11. ตำบลน้ำผุด</h3>
+                        <p class="tambon-slogan">"ผลไม้เลิศรส วิวภูเขา"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>จุดชมวิวเขาแปะช้อย</li><li>ทุเรียนบ้านพันธุ์ดี</li><li>ล่องแก่ง (บางฤดูกาล)</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลน้ำผุด (Nam Phut)" 
+                            data-img="https://source.unsplash.com/1200x800/?fruit,orchard"
+                            data-desc="ตั้งอยู่บริเวณเชิงเขา มีอากาศดีและดินอุดมสมบูรณ์ เหมาะแก่การปลูกผลไม้ โดยเฉพาะทุเรียนบ้านและผลไม้ตามฤดูกาล มีแหล่งท่องเที่ยวเชิงผจญภัยและจุดชมวิวที่สวยงามบนยอดเขา">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+                
+                 <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?temple,buddhist" alt="ตำบลนาตาล่วง"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">12. ตำบลนาตาล่วง</h3>
+                        <p class="tambon-slogan">"ชุมชนเข้มแข็ง วัดงาม"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>วัดไทรงาม</li><li>เครื่องแกงตำมือ</li><li>ศูนย์จัดการภัยพิบัติชุมชน</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลนาตาล่วง (Na Ta Luang)" 
+                            data-img="https://source.unsplash.com/1200x800/?curry,paste"
+                            data-desc="เป็นตำบลตัวอย่างด้านการจัดการภัยพิบัติโดยชุมชน มีวัดไทรงามเป็นศูนย์รวมจิตใจที่มีความร่มรื่น กลุ่มแม่บ้านมีชื่อเสียงในการทำเครื่องแกงปักษ์ใต้รสเด็ดที่ตำด้วยมือ">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?college,students" alt="ตำบลบ้านโพธิ์"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">13. ตำบลบ้านโพธิ์</h3>
+                        <p class="tambon-slogan">"การศึกษาอาชีวะ เกษตรก้าวหน้า"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>วิทยาลัยเทคนิคตรัง</li><li>ผลิตภัณฑ์แปรรูปยางพารา</li><li>ขนมเปี๊ยะซอย 9 (แหล่งผลิต)</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลบ้านโพธิ์ (Ban Pho)" 
+                            data-img="https://source.unsplash.com/1200x800/?workshop,tech"
+                            data-desc="เป็นที่ตั้งของสถานศึกษาด้านอาชีวศึกษา พื้นที่ส่วนใหญ่ทำสวนยางพารา มีโรงงานแปรรูปไม้ยาง และเป็นแหล่งผลิตขนมของฝากที่มีชื่อเสียงระดับจังหวัดหลายเจ้า">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+                
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?market,local" alt="ตำบลนาท่ามเหนือ"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">14. ตำบลนาท่ามเหนือ</h3>
+                        <p class="tambon-slogan">"ตลาดเก่าแก่ ชุมชนค้าขาย"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>ตลาดคลองเต็ง</li><li>วัดสิทธิชัยรังสรรค์</li><li>กาแฟโบราณ</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลนาท่ามเหนือ (Na Tham Nuea)" 
+                            data-img="https://source.unsplash.com/1200x800/?market,crowd"
+                            data-desc="เป็นที่ตั้งของชุมชน 'คลองเต็ง' ซึ่งเป็นย่านการค้าเก่าแก่ มีตลาดนัดที่คึกคัก มีวิถีชีวิตแบบชาวไทยเชื้อสายจีนผสมผสานกับคนในท้องถิ่น อาหารการกินอุดมสมบูรณ์">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+                <article class="tambon-card">
+                    <div class="card-img-wrapper"><img src="https://source.unsplash.com/800x600/?temple,lake" alt="ตำบลนาท่ามใต้"></div>
+                    <div class="card-body">
+                        <h3 class="tambon-name">15. ตำบลนาท่ามใต้</h3>
+                        <p class="tambon-slogan">"สงบงาม ริมน้ำตรัง"</p>
+                        <h4 class="highlights-title">ของดีแนะนำ:</h4>
+                        <ul class="good-stuff-list"><li>วัดระตาราม (วัดนาท่ามใต้)</li><li>วิถีชีวิตริมแม่น้ำ</li><li>สวนผักพื้นบ้าน</li></ul>
+                        <button class="btn-details" 
+                            data-title="ตำบลนาท่ามใต้ (Na Tham Tai)" 
+                            data-img="https://source.unsplash.com/1200x800/?river,boat"
+                            data-desc="ตำบลที่เงียบสงบ มีวัดเก่าแก่ประจำตำบล เป็นพื้นที่ราบลุ่มแม่น้ำตรัง เหมาะแก่การทำเกษตรกรรม ชาวบ้านยังคงใช้วิถีชีวิตเรียบง่ายผูกพันกับสายน้ำ">
+                            ดูรายละเอียดเพิ่มเติม
+                        </button>
+                    </div>
+                </article>
+
+            </div> </div>
+    </section>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-img-container">
+                <img id="modalImg" src="" alt="Detail Image">
+            </div>
+            <div class="modal-body">
+                <h3 id="modalTitle" class="modal-title"></h3>
+                <p id="modalDesc" class="modal-desc"></p>
+            </div>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-info">
+                <h3>อำเภอเมืองตรัง จังหวัดตรัง</h3>
+                <p>ที่ว่าการอำเภอเมืองตรัง ถนนวิเศษกุล ตำบลทับเที่ยง อำเภอเมือง จังหวัดตรัง 92000</p>
+            </div>
+            
+            <div class="footer-credits">
+                <h4>ผู้จัดทำสื่อประชาสัมพันธ์</h4>
+                <p>นางสาวธิดิยา เกรียง นักศึกษาชั้น ปวส.2</p>
+                <p>วิทยาลัยอาชีวศึกษาโปลีเทคนิคตรัง</p>
+                <p style="margin-top: 15px; font-size: 0.8rem; opacity: 0.8;">ข้อมูล ณ วันที่ 1 พฤศจิกายน 2568</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const modal = document.getElementById("detailModal");
+        const modalImg = document.getElementById("modalImg");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDesc = document.getElementById("modalDesc");
+        const closeBtn = document.getElementsByClassName("close-modal")[0];
+        const detailButtons = document.querySelectorAll('.btn-details');
+
+        detailButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const title = this.getAttribute('data-title');
+                const imgUrl = this.getAttribute('data-img');
+                const desc = this.getAttribute('data-desc');
+
+                modalTitle.textContent = title;
+                modalImg.src = imgUrl;
+                modalDesc.textContent = desc;
+               
+                modal.style.display = "flex";
+            });
+        });
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
