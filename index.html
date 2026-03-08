@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>มรดกศาลเจ้าเมืองตรัง | สืบสานวัฒนธรรม</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'auspicious-red': '#990000',
+                        'dark-red': '#5c0000',
+                        'gold': '#d4af37',
+                        'light-gold': '#f3e5ab',
+                    },
+                    fontFamily: {
+                        body: ['"Bai Jamjuree"', 'sans-serif'],
+                        heading: ['"Chakra Petch"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Bai Jamjuree', sans-serif;
+            background-color: #fcf9f2;
+            overflow-x: hidden;
+        }
+
+        /* เน้นการใช้ฟอนต์สไตล์เหลี่ยม/เฉียบคม สำหรับหัวข้อตัวหนา */
+        h1, h2, h3, h4, h5, h6, .text-4xl, .text-5xl, .text-6xl, .text-7xl, .text-8xl, .font-bold {
+            font-family: 'Chakra Petch', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #990000;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5c0000;
+        }
+
+        /* Page Transitions */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .page-section.active {
+            display: block;
+            opacity: 1;
+            animation: fadeInPage 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Nav Link Effects */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: #d4af37;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #d4af37 !important;
+        }
+
+        /* Card Hover Effects */
+        .shrine-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .shrine-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(153, 0, 0, 0.3), 0 10px 10px -5px rgba(153, 0, 0, 0.2);
+            border-color: #d4af37;
+        }
+        .shrine-img-container {
+            overflow: hidden;
+        }
+        .shrine-img-container img {
+            transition: transform 0.6s ease;
+        }
+        .shrine-card:hover .shrine-img-container img {
+            transform: scale(1.1);
+        }
+
+        /* Hero Parallax Setup */
+        .hero-bg {
+            background-image: linear-gradient(rgba(92, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Animation Classes for JS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating Animation */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #990000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.5s ease;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3e5ab;
+            border-top: 5px solid #d4af37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Fancy Border */
+        .border-pattern {
+            border: 2px solid #d4af37;
+            position: relative;
+        }
+        .border-pattern::before, .border-pattern::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            border: 2px solid #d4af37;
+        }
+        .border-pattern::before { top: -6px; left: -6px; border-right: none; border-bottom: none; }
+        .border-pattern::after { bottom: -6px; right: -6px; border-left: none; border-top: none; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="spinner mb-4"></div>
+        <h2 class="text-gold text-2xl font-bold tracking-wider animate-pulse">กำลังเข้าสู่ดินแดนแห่งศรัทธา...</h2>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-auspicious-red shadow-lg text-white" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="switchPage('home')">
+                    <i class="fa-solid fa-yin-yang text-gold text-3xl mr-3 floating"></i>
+                    <span class="font-bold text-xl md:text-2xl text-gold tracking-wide">มรดกศาลเจ้า<span class="text-gold">เมืองตรัง</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-6 lg:space-x-8 items-center">
+                    <button onclick="switchPage('home')" class="nav-link active font-medium hover:text-light-gold" data-target="home">หน้าแรก</button>
+                    <button onclick="switchPage('history')" class="nav-link font-medium hover:text-light-gold" data-target="history">ประวัติความเป็นมา</button>
+                    <button onclick="switchPage('shrines')" class="nav-link font-medium hover:text-light-gold" data-target="shrines">ศาลเจ้าที่แนะนำ</button>
+                    <button onclick="switchPage('culture')" class="nav-link font-medium hover:text-light-gold" data-target="culture">ประเพณีวัฒนธรรม</button>
+                    <button onclick="switchPage('contact')" class="bg-gold text-dark-red px-6 py-2 rounded-full font-bold hover:bg-light-gold transition-colors transform hover:scale-105 shadow-md" data-target="contact">ติดต่อเรา</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-red border-t border-red-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+                <button onclick="switchPage('home'); closeMobileMenu()" class="text-left text-white hover:text-gold block px-3 py-2 rounded-md text-base font-medium">หน้าแรก</button>
+                <button onclick="switchPage('history'); closeMobileMenu()" class="text-left text-white hover:text-gold block px-3 py-2 rounded-md text-base font-medium">ประวัติความเป็นมา</button>
+                <button onclick="switchPage('shrines'); closeMobileMenu()" class="text-left text-white hover:text-gold block px-3 py-2 rounded-md text-base font-medium">ศาลเจ้าที่แนะนำ</button>
+                <button onclick="switchPage('culture'); closeMobileMenu()" class="text-left text-white hover:text-gold block px-3 py-2 rounded-md text-base font-medium">ประเพณีวัฒนธรรม</button>
+                <button onclick="switchPage('contact'); closeMobileMenu()" class="text-left text-gold font-bold block px-3 py-2 rounded-md text-base">ติดต่อเรา</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="pt-20">
+        
+        <!-- ==================== HOME PAGE ==================== -->
+        <div id="home" class="page-section active">
+            <!-- Hero Section -->
+            <div class="relative h-screen flex items-center justify-center hero-bg">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-red opacity-80"></div>
+                
+                <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+                    <div class="inline-block mb-4 p-3 rounded-full bg-black bg-opacity-40 backdrop-blur-sm border border-gold reveal">
+                        <i class="fa-solid fa-dragon text-gold text-4xl"></i>
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg reveal" style="transition-delay: 200ms;">
+                        สืบสานศรัทธา <br> <span class="text-gold text-6xl md:text-8xl mt-2 block">มรดกศาลเจ้าเมืองตรัง</span>
+                        <span class="text-2xl md:text-3xl text-light-gold/80 block mt-6 font-normal tracking-widest font-body">董里府神庙文化遗产 <br><span class="text-lg md:text-xl text-gray-300 tracking-wider">Dǒnglǐ fǔ shénmiào wénhuà yíchǎn</span></span>
+                    </h1>
+                    <p class="text-lg md:text-2xl text-light-gold mb-10 max-w-3xl mx-auto font-light leading-relaxed drop-shadow-md reveal" style="transition-delay: 400ms;">
+                        ร่วมค้นพบความงดงามทางสถาปัตยกรรม ประวัติศาสตร์อันทรงคุณค่า และพลังศรัทธาที่ผูกพันกับชาวไทยเชื้อสายจีนในจังหวัดตรังมายาวนานนับศตวรรษ
+                    </p>
+                    <div class="reveal" style="transition-delay: 600ms;">
+                        <button onclick="document.getElementById('intro-section').scrollIntoView({ behavior: 'smooth' })" class="bg-gradient-to-r from-gold to-yellow-500 text-dark-red text-xl font-bold py-4 px-10 rounded-full shadow-[0_0_20px_rgba(212,175,55,0.5)] hover:shadow-[0_0_30px_rgba(212,175,55,0.8)] transition-all transform hover:-translate-y-1 hover:scale-105 group">
+                            เริ่มต้นการเดินทาง <i class="fa-solid fa-arrow-down ml-2 group-hover:animate-bounce"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Scroll Indicator -->
+                <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce text-gold opacity-70">
+                    <span class="text-sm tracking-widest mb-2 font-light">เลื่อนลง</span>
+                    <i class="fa-solid fa-chevron-down text-2xl"></i>
+                </div>
+            </div>
+
+
+            <!-- Intro Section -->
+            <div id="intro-section" class="py-24 bg-white scroll-mt-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                        <div class="order-2 md:order-1 relative reveal">
+                            <div class="absolute inset-0 bg-auspicious-red transform translate-x-4 translate-y-4 rounded-xl -z-10"></div>
+                            <img src="https://images.topnews.co.th/2025/09/%E0%B8%A8%E0%B8%B2%E0%B8%A5%E0%B9%80%E0%B8%9B%E0%B8%B2%E0%B8%81%E0%B8%87-05752_0-scaled.jpg?x-image-process=style/webp" alt="" class="rounded-xl shadow-2xl w-full object-cover h-[500px]">
+                            <div class="absolute -bottom-8 -right-8 bg-gold text-dark-red p-6 rounded-lg shadow-xl hidden lg:block">
+                                <p class="text-4xl font-bold mb-1">100+</p>
+                                <p class="text-sm font-semibold">ปีแห่งประวัติศาสตร์</p>
+                            </div>
+                        </div>
+                        <div class="order-1 md:order-2 reveal">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-1 bg-gold mr-4"></div>
+                                <h3 class="text-auspicious-red font-semibold tracking-wider">ยินดีต้อนรับ <span class="text-gray-400 font-normal ml-2">欢迎 (Huānyíng)</span></h3>
+                            </div>
+                            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">ศูนย์รวมจิตใจ <br><span class="text-auspicious-red">ชาวตรังเชื้อสายจีน</span>
+                                <span class="text-xl text-gray-400 block mt-3 font-normal font-body">董里华裔的精神寄托 (Dǒnglǐ huáyì de jīngshén jìtuō)</span>
+                            </h2>
+                            <p class="text-gray-600 text-lg mb-6 leading-relaxed">
+                                จังหวัดตรัง เป็นหนึ่งในจังหวัดทางภาคใต้ที่มีชาวไทยเชื้อสายจีนอาศัยอยู่เป็นจำนวนมาก การอพยพเข้ามาตั้งถิ่นฐานในอดีตได้นำพาศรัทธาและความเชื่อติดตัวมาด้วย ก่อให้เกิด "ศาลเจ้า" หรือ "อ๊าม" จำนวนมากที่กระจายตัวอยู่ทั่วเมือง
+                            </p>
+                            <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                                เว็บไซต์นี้จัดทำขึ้นเพื่อรวบรวมข้อมูล อนุรักษ์ และเผยแพร่ความงดงามทางสถาปัตยกรรม รวมถึงประเพณีอันศักดิ์สิทธิ์ให้คงอยู่สืบไป
+                            </p>
+                            <button onclick="switchPage('history')" class="text-auspicious-red font-bold hover:text-red-700 flex items-center group">
+                                อ่านประวัติศาสตร์เพิ่มเติม 
+                                <span class="bg-red-100 p-2 rounded-full ml-3 group-hover:bg-auspicious-red group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== HISTORY PAGE ==================== -->
+        <div id="history" class="page-section bg-gray-50">
+            <!-- Header Banner -->
+            <div class="bg-auspicious-red text-white py-20 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/chinese-gong.png')]"></div>
+                <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
+                    <h1 class="text-5xl font-bold mb-4 text-gold drop-shadow-md">ประวัติความเป็นมา</h1>
+                    <p class="text-2xl text-white/70 mb-4 font-body tracking-wider">历史背景 <span class="text-lg ml-2">(Lìshǐ bèijǐng)</span></p>
+                    <p class="text-xl max-w-2xl mx-auto font-light">ร่องรอยแห่งกาลเวลาและการตั้งถิ่นฐานของบรรพชน</p>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="max-w-7xl mx-auto px-4 py-20">
+                <!-- Timeline Event 1 -->
+                <div class="flex flex-col md:flex-row items-center gap-12 mb-32 reveal">
+                    <div class="md:w-1/2 relative pb-8 pr-8">
+                        <div class="border-pattern p-3 bg-white shadow-xl relative z-10 w-4/5 transform hover:scale-105 transition-transform duration-500">
+                            <img src="https://wikicommunity.sac.or.th/files/community/1322/attach/large-65a72eab95bf5.jpg">
+                        </div>
+                        <div class="border-pattern p-3 bg-white shadow-2xl absolute bottom-0 right-0 z-20 w-3/5 transform hover:scale-105 transition-transform duration-500">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZZ9g2fkb8waV19UnWbvnwu9ReXcPyr6-9Gg&s" alt="" class="w-full h-40 md:h-48 object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <span class="text-6xl font-bold text-gray-200 block mb-2 font-heading">๐๑</span>
+                        <h2 class="text-3xl font-bold text-auspicious-red mb-4">การอพยพสู่เมืองกันตัง</h2>
+                        <p class="text-gray-700 leading-relaxed text-lg">
+                            ในอดีต ชาวจีนนับแสนคนได้ล่องเรือสำเภาข้ามน้ำข้ามทะเลมายังคาบสมุทรมลายูและภาคใต้ของไทย จังหวัดตรัง โดยเฉพาะเมืองท่าอย่าง "กันตัง" เป็นจุดหมายปลายทางสำคัญ พวกเขาเข้ามาเป็นแรงงานเหมืองแร่และเกษตรกร พร้อมกับนำองค์เทพเจ้าจากบ้านเกิดมาเพื่อเป็นที่พึ่งทางใจ
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timeline Event 2 -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12 mb-32 reveal">
+                    <div class="md:w-1/2 relative pb-8 pl-8">
+                        <div class="border-pattern p-3 bg-white shadow-xl relative z-10 w-4/5 ml-auto transform hover:scale-105 transition-transform duration-500">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyg2vP0ycAOA_kddHG9WfYtXy5VXbZx6S3WQ&s" alt="" class="w-full h-56 md:h-72 object-cover">
+                        </div>
+                        <div class="border-pattern p-3 bg-white shadow-2xl absolute bottom-0 left-0 z-20 w-3/5 transform hover:scale-105 transition-transform duration-500">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCm8XAmHH8GQKSROFcCqb390ZMRljxeLWc8w&s" alt="" class="w-full h-40 md:h-48 object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 text-left md:text-right">
+                        <span class="text-6xl font-bold text-gray-200 block mb-2 font-heading">๐๒</span>
+                        <h2 class="text-3xl font-bold text-auspicious-red mb-4">การสร้างชุมชนและศาลเจ้า</h2>
+                        <p class="text-gray-700 leading-relaxed text-lg">
+                            เมื่อตั้งตัวได้ ชุมชนชาวจีนได้ร่วมกันสร้าง "ศาลเจ้า" ด้วยสถาปัตยกรรมแบบจีนดั้งเดิม ช่างฝีมือจากแผ่นดินใหญ่ถูกเชิญมาแกะสลักไม้ ปั้นมังกร และวาดจิตรกรรมฝาผนัง ศาลเจ้าจึงไม่ได้เป็นแค่ศาสนสถาน แต่เป็นศูนย์กลางของชุมชน เป็นโรงเรียน โรงพยาบาล และศาลยุติธรรมในยุคแรกๆ
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timeline Event 3 -->
+                <div class="flex flex-col md:flex-row items-center gap-12 mb-32 reveal">
+                    <div class="md:w-1/2 relative pb-8 pr-8">
+                        <div class="border-pattern p-3 bg-white shadow-xl relative z-10 w-4/5 transform hover:scale-105 transition-transform duration-500">
+                            <img src="data:image/jpeg;base64,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" alt="" class="w-full h-56 md:h-72 object-cover">
+                        </div>
+                        <div class="border-pattern p-3 bg-white shadow-2xl absolute bottom-0 right-0 z-20 w-3/5 transform hover:scale-105 transition-transform duration-500">
+                            <img src="data:image/jpeg;base64,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" alt="" class="w-full h-40 md:h-48 object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <span class="text-6xl font-bold text-gray-200 block mb-2 font-heading">๐๓</span>
+                        <h2 class="text-3xl font-bold text-auspicious-red mb-4">ยุครุ่งเรืองทางการค้าและการขยายศาลเจ้า</h2>
+                        <p class="text-gray-700 leading-relaxed text-lg">
+                            เมื่อก้าวเข้าสู่ยุคที่การค้าขายรุ่งเรือง โดยเฉพาะการทำเหมืองแร่ดีบุกและการปลูกยางพารา คหบดีชาวจีนที่ประสบความสำเร็จได้ร่วมใจกันบริจาคเงินเพื่อบูรณะและขยายศาลเจ้าให้ยิ่งใหญ่ขึ้น มีการสั่งซื้อกระเบื้องหลังคา เสามังกร และเครื่องตกแต่งจากประเทศจีน ทำให้ศาลเจ้าในเมืองตรังมีความวิจิตรตระการตาและเป็นสัญลักษณ์ของความมั่งคั่งของชุมชน
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timeline Event 4 -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12 mb-32 reveal">
+                    <div class="md:w-1/2 relative pb-8 pl-8">
+                        <div class="border-pattern p-3 bg-white shadow-xl relative z-10 w-4/5 ml-auto transform hover:scale-105 transition-transform duration-500">
+                            <img src="https://www.taraphuket.com/wp-content/uploads/taraphuket-2023-12-19_05-41-32_073253.webp" alt="" class="w-full h-56 md:h-72 object-cover">
+                        </div>
+                        <div class="border-pattern p-3 bg-white shadow-2xl absolute bottom-0 left-0 z-20 w-3/5 transform hover:scale-105 transition-transform duration-500">
+                            <img src="https://static.thairath.co.th/media/Dtbezn3nNUxytg04ajYfBnvN8CZU2UluPWNZUkVmHcWdhV.jpg" alt="" class="w-full h-40 md:h-48 object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 text-left md:text-right">
+                        <span class="text-6xl font-bold text-gray-200 block mb-2 font-heading">๐๔</span>
+                        <h2 class="text-3xl font-bold text-auspicious-red mb-4">จุดกำเนิดประเพณีถือศีลกินผัก</h2>
+                        <p class="text-gray-700 leading-relaxed text-lg">
+                            ประเพณีถือศีลกินผัก (เจี๊ยะฉ่าย) ในตรัง มีเรื่องเล่าสืบต่อกันมาว่าในอดีตเกิดโรคระบาดใหญ่ คณะงิ้วที่เดินทางมาแสดงได้ริเริ่มให้มีการถือศีลกินเจเพื่อขอขมาและปัดเป่าโรคร้าย เมื่อโรคระบาดหายไป ชาวบ้านจึงเกิดความศรัทธาและยึดถือปฏิบัติสืบต่อกันมาจนกลายเป็นงานบุญที่ยิ่งใหญ่ที่สุดของจังหวัดในปัจจุบัน
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timeline Event 5 -->
+                <div class="flex flex-col md:flex-row items-center gap-12 reveal">
+                    <div class="md:w-1/2 relative pb-8 pr-8">
+                        <div class="border-pattern p-3 bg-white shadow-xl relative z-10 w-4/5 transform hover:scale-105 transition-transform duration-500">
+                            <img src="https://learning-city.trang.psu.ac.th/wp-content/uploads/2025/04/%E0%B8%A8%E0%B8%B2%E0%B8%A5%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%81%E0%B8%B4%E0%B8%A7%E0%B8%AD%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%AD%E0%B8%B5%E0%B9%88%E0%B8%A2-%E0%B8%AD%E0%B8%B3%E0%B9%80%E0%B8%A0%E0%B8%AD%E0%B9%80%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%87-%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-2.jpg" alt="" class="w-full h-56 md:h-72 object-cover">
+                        </div>
+                        <div class="border-pattern p-3 bg-white shadow-2xl absolute bottom-0 right-0 z-20 w-3/5 transform hover:scale-105 transition-transform duration-500">
+                            <img src="data:image/jpeg;base64,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" alt="" class="w-full h-40 md:h-48 object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <span class="text-6xl font-bold text-gray-200 block mb-2 font-heading">๐๕</span>
+                        <h2 class="text-3xl font-bold text-auspicious-red mb-4">มรดกทางวัฒนธรรมในยุคปัจจุบัน</h2>
+                        <p class="text-gray-700 leading-relaxed text-lg">
+                            ปัจจุบัน ศาลเจ้าไม่ได้เป็นเพียงสถานที่ประกอบพิธีกรรมทางศาสนา แต่ยังเป็นพิพิธภัณฑ์ที่มีชีวิต เป็นศูนย์รวมใจที่เชื่อมโยงคนรุ่นเก่าและคนรุ่นใหม่เข้าด้วยกัน ศิลปะ สถาปัตยกรรม และประเพณีต่างๆ ได้รับการอนุรักษ์อย่างดี เพื่อให้ลูกหลานชาวตรังได้ภาคภูมิใจในรากเหง้าและสืบสานมรดกอันล้ำค่านี้ต่อไป
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SHRINES PAGE ==================== -->
+        <div id="shrines" class="page-section">
+            <div class="py-20 bg-[url('https://www.transparenttextures.com/patterns/rice-paper.png')] bg-[#fdfaf5]">
+                <div class="max-w-7xl mx-auto px-4 text-center mb-16 reveal">
+                    <h2 class="text-4xl font-bold text-auspicious-red mb-4 inline-block relative">
+                        ศาลเจ้าในจังหวัดตรังที่แนะนำ
+                        <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gold"></div>
+                    </h2>
+                    <p class="text-2xl text-gray-400 mt-6 font-body tracking-wider">推荐神庙 <span class="text-lg ml-2">(Tuījiàn shénmiào)</span></p>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto text-lg">สัมผัสความงดงามและกราบไหว้ขอพรสถานที่ศักดิ์สิทธิ์คู่บ้านคู่เมืองตรัง</p>
+                </div>
+
+                <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    
+                    <!-- Card 1 -->
+                    <div class="shrine-card bg-white rounded-xl overflow-hidden border border-gray-100 shadow-lg reveal group relative cursor-pointer" onclick="showShrineDetail('kew-ong')">
+                        <div class="absolute top-4 right-4 bg-gold text-dark-red px-3 py-1 rounded-full text-sm font-bold z-10 shadow">ยอดนิยม</div>
+                        <div class="shrine-img-container h-64 relative">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNxaYiL1WoVVMhQixlDZCItrhIK6nLhjU-IQ&s" alt="" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-4 left-4">
+                                <h3 class="text-2xl font-bold text-white tracking-wide">ศาลเจ้ากิวอ่องเอี่ย</h3>
+                                <p class="text-gold text-sm mt-1 font-body">九皇爷庙 (Jiǔhuángyé miào)</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 mb-4 line-clamp-3">ศาลเจ้าที่เก่าแก่และมีความสำคัญที่สุดแห่งหนึ่งในจังหวัดตรัง เป็นศูนย์กลางของการจัดประเพณีถือศีลกินผักที่ยิ่งใหญ่ที่สุดในจังหวัด ภายในประดิษฐานองค์กิวอ่องไต่เต่</p>
+                            <div class="flex justify-between items-center border-t border-gray-100 pt-4">
+                                <span class="text-sm text-gray-500"><i class="fa-solid fa-location-dot text-auspicious-red mr-2"></i>อ.เมือง จ.ตรัง</span>
+                                <button class="text-auspicious-red font-semibold hover:text-gold transition-colors">อ่านข้อมูลเพิ่มเติม <i class="fa-solid fa-angle-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="shrine-card bg-white rounded-xl overflow-hidden border border-gray-100 shadow-lg reveal group cursor-pointer" style="transition-delay: 150ms;" onclick="showShrineDetail('tam-kong')">
+                        <div class="shrine-img-container h-64 relative">
+                            <img src="https://www.andamannlttrang.com/wp-content/uploads/2023/08/%E0%B8%97%E0%B9%88%E0%B8%B2%E0%B8%A1%E0%B8%81%E0%B8%87%E0%B9%80%E0%B8%A2%E0%B8%B5%E0%B9%88%E0%B8%A21.jpg" alt="" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-4 left-4">
+                                <h3 class="text-2xl font-bold text-white tracking-wide">ศาลเจ้าท่ามกงเยี่ย</h3>
+                                <p class="text-gold text-sm mt-1 font-body">谭公爷庙 (Tángōngyé miào)</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 mb-4 line-clamp-3">โดดเด่นด้วยสถาปัตยกรรมแบบจีนฮากกา (จีนแคะ) ประชาชนนิยมมากราบไหว้ขอพรเรื่องสุขภาพและการขจัดปัดเป่าโรคภัยไข้เจ็บ บรรยากาศเงียบสงบและศักดิ์สิทธิ์</p>
+                            <div class="flex justify-between items-center border-t border-gray-100 pt-4">
+                                <span class="text-sm text-gray-500"><i class="fa-solid fa-location-dot text-auspicious-red mr-2"></i>อ.เมือง จ.ตรัง</span>
+                                <button class="text-auspicious-red font-semibold hover:text-gold transition-colors">อ่านข้อมูลเพิ่มเติม <i class="fa-solid fa-angle-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="shrine-card bg-white rounded-xl overflow-hidden border border-gray-100 shadow-lg reveal group cursor-pointer" style="transition-delay: 300ms;" onclick="showShrineDetail('muen-ram')">
+                        <div class="shrine-img-container h-64 relative">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTcK7guTgJyXM30iZ0Wio9MA8NEkrZUQJQGw&s" alt="" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-4 left-4">
+                                <h3 class="text-2xl font-bold text-white tracking-wide">ศาลเจ้าพ่อหมื่นราม</h3>
+                                <p class="text-gold text-sm mt-1 font-body">万兰神庙 (Wànlán shénmiào)</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-600 mb-4 line-clamp-3">อีกหนึ่งศาลเจ้าหลักที่อยู่คู่เมืองตรังมาอย่างยาวนาน มีการจัดงานประเพณีที่ยิ่งใหญ่และมีขบวนแห่พระรอบเมืองที่สวยงามตระการตาทุกปี</p>
+                            <div class="flex justify-between items-center border-t border-gray-100 pt-4">
+                                <span class="text-sm text-gray-500"><i class="fa-solid fa-location-dot text-auspicious-red mr-2"></i>อ.เมือง จ.ตรัง</span>
+                                <button class="text-auspicious-red font-semibold hover:text-gold transition-colors">อ่านข้อมูลเพิ่มเติม <i class="fa-solid fa-angle-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- Gallery Preview (Multiple Images Demo) -->
+                <div class="max-w-7xl mx-auto px-4 mt-20 reveal">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">แกลเลอรีภาพบรรยากาศศาลเจ้า</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKVVFOrKNLUJMXOKb3G4RPhq1rwnZGTiiZng&s" alt="Gallery 1" class="w-full h-40 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer">
+                        <img src="https://learning-city.trang.psu.ac.th/wp-content/uploads/2025/04/%E0%B8%A8%E0%B8%B2%E0%B8%A5%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2%E0%B8%97%E0%B9%88%E0%B8%B2%E0%B8%A1%E0%B8%81%E0%B8%87%E0%B9%80%E0%B8%A2%E0%B8%B5%E0%B9%88%E0%B8%A2-%E0%B8%AD%E0%B8%B3%E0%B9%80%E0%B8%A0%E0%B8%AD%E0%B9%80%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%87-%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-1.jpg" alt="Gallery 2" class="w-full h-40 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer">
+                        <img src="data:image/jpeg;base64,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" alt="Gallery 3" class="w-full h-40 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer">
+                        <img src="https://www.glitzmagazines.com/wp-content/uploads/2022/04/%E0%B8%97%E0%B8%97%E0%B8%97.-%E0%B8%97%E0%B8%A3%E0%B8%B4%E0%B8%9B%E0%B8%AA%E0%B8%B2%E0%B8%A2%E0%B8%A1%E0%B8%B9-%E0%B8%95%E0%B8%A3%E0%B8%B1%E0%B8%87-11.jpg" alt="Gallery 4" class="w-full h-40 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ==================== CULTURE PAGE ==================== -->
+        <div id="culture" class="page-section">
+            <div class="bg-dark-red py-20 text-white relative">
+                <!-- Decorative element -->
+                <div class="absolute top-0 right-0 p-10 opacity-20 pointer-events-none">
+                    <i class="fa-solid fa-yin-yang text-[200px] animate-spin" style="animation-duration: 40s;"></i>
+                </div>
+
+                <div class="max-w-7xl mx-auto px-4 relative z-10">
+                    <div class="text-center mb-16 reveal">
+                        <h2 class="text-4xl md:text-5xl font-bold text-gold mb-4">ประเพณีและวัฒนธรรม</h2>
+                        <p class="text-2xl text-gray-400 mb-6 font-body tracking-wider">传统文化 <span class="text-lg ml-2">(Chuántǒng wénhuà)</span></p>
+                        <p class="text-lg text-gray-300 max-w-3xl mx-auto">จิตวิญญาณและความเชื่อที่สืบทอดจากรุ่นสู่รุ่น ถ่ายทอดผ่านพิธีกรรมอันศักดิ์สิทธิ์และงานบุญที่ยิ่งใหญ่</p>
+                    </div>
+
+                    <!-- Culture Content 1: ถือศีลกินผัก -->
+                    <div class="bg-auspicious-red/50 backdrop-blur-md border border-red-500/30 rounded-2xl p-8 md:p-12 mb-10 shadow-2xl reveal flex flex-col lg:flex-row gap-10 items-center">
+                        <div class="lg:w-1/2">
+                            <span class="text-gold font-bold tracking-widest text-sm mb-2 block">๐๑ | งานบุญยิ่งใหญ่แห่งปี</span>
+                            <h3 class="text-3xl font-bold text-white mb-2">ประเพณีถือศีลกินผัก (เจี๊ยะฉ่าย)</h3>
+                            <p class="text-light-gold text-lg mb-4 font-body tracking-wider">九皇斋节 <span class="text-sm ml-2 text-gray-300">(Jiǔhuáng zhāijié)</span></p>
+                            <p class="text-gray-200 leading-relaxed mb-6 text-lg">
+                                งานบุญที่ยิ่งใหญ่ที่สุดของชาวตรัง จัดขึ้นในช่วงเดือน 9 ตามปฏิทินจีนของทุกปี ตลอด 9 วัน 9 คืน เมืองตรังจะถูกประดับประดาด้วยธงสีเหลือง ผู้คนจะนุ่งขาวห่มขาว ชำระล้างจิตใจและร่างกาย งดเว้นการกินเนื้อสัตว์ เพื่อถวายสักการะแด่องค์กิวอ่องไต่เต่
+                            </p>
+                            <ul class="space-y-3 text-gray-300">
+                                <li><i class="fa-solid fa-fire text-gold mr-3"></i> <strong>พิธีลุยไฟ (โก้ยโห้ย):</strong> การแสดงอภินิหารของม้าทรงเพื่อชำระล้างสิ่งชั่วร้าย</li>
+                                <li><i class="fa-solid fa-flag text-gold mr-3"></i> <strong>พิธีแห่พระรอบเมือง:</strong> การออกโปรดลูกหลานตามบ้านเรือน</li>
+                                <li><i class="fa-solid fa-bridge text-gold mr-3"></i> <strong>พิธีข้ามสะพานสะเดาะเคราะห์:</strong> เพื่อความเป็นสิริมงคลต่อชีวิต</li>
+                            </ul>
+                        </div>
+                        <div class="lg:w-1/2 w-full grid grid-cols-2 gap-4">
+                            <img src="https://www.khaophuket.com/photo/listing/2024/1727869664_1.jpg" class="rounded-lg shadow-lg w-full h-48 md:h-64 object-cover transform transition hover:scale-105" alt="">
+                            <img src="https://media.readthecloud.co/wp-content/uploads/2020/10/29201133/phuket-vegetarian-festival-2020-17.webp" class="rounded-lg shadow-lg w-full h-48 md:h-64 object-cover transform translate-y-6 transition hover:scale-105" alt="">
+                        </div>
+                    </div>
+
+                    <!-- Culture Content 2: ตรุษจีน (สลับฝั่ง) -->
+                    <div class="bg-auspicious-red/50 backdrop-blur-md border border-red-500/30 rounded-2xl p-8 md:p-12 mb-10 shadow-2xl reveal flex flex-col lg:flex-row-reverse gap-10 items-center">
+                        <div class="lg:w-1/2">
+                            <span class="text-gold font-bold tracking-widest text-sm mb-2 block">๐๒ | เทศกาลเริ่มต้นปีใหม่</span>
+                            <h3 class="text-3xl font-bold text-white mb-2">เทศกาลตรุษจีน และการไหว้เจ้า</h3>
+                            <p class="text-light-gold text-lg mb-4 font-body tracking-wider">春节与祭拜 <span class="text-sm ml-2 text-gray-300">(Chūnjié yǔ jìbài)</span></p>
+                            <p class="text-gray-200 leading-relaxed mb-6 text-lg">
+                                ช่วงเวลาแห่งการเฉลิมฉลองและรวมญาติ ศาลเจ้าทุกแห่งในตรังจะคึกคักเป็นพิเศษ ผู้คนหลั่งไหลมาจุดธูปเทียนสีแดงขนาดใหญ่ ไหว้สักการะฟ้าดินและเทพเจ้าเพื่อขอพรให้ครอบครัวอยู่เย็นเป็นสุข ค้าขายร่ำรวยตลอดปีใหม่
+                            </p>
+                            <ul class="space-y-3 text-gray-300">
+                                <li><i class="fa-solid fa-hands-praying text-gold mr-3"></i> <strong>ไหว้รับไฉ่ซิงเอี้ย:</strong> การตั้งโต๊ะไหว้รับเทพเจ้าแห่งโชคลาภในยามค่ำคืน</li>
+                                <li><i class="fa-solid fa-burst text-gold mr-3"></i> <strong>การจุดประทัด:</strong> เสียงประทัดดังสนั่นเพื่อปัดเป่าสิ่งชั่วร้ายและเรียกความสิริมงคล</li>
+                                <li><i class="fa-solid fa-dragon text-gold mr-3"></i> <strong>เชิดสิงโตและมังกร:</strong> ขบวนแห่ศิลปะจีนดั้งเดิมที่มาพร้อมเสียงกลองอันเร้าใจ</li>
+                            </ul>
+                        </div>
+                        <div class="lg:w-1/2 w-full grid grid-cols-2 gap-4">
+                            <img src="https://static.amarintv.com/media/PJVlR0ljpN9olyvl2y3IOS1x2jI6mL9mSd17yRIrDXYUFzHKIjhX77VmardAE2meHj.jpg" class="rounded-lg shadow-lg w-full h-48 md:h-64 object-cover transform transition hover:scale-105" alt="">
+                            <img src="https://www.silpa-mag.com/wp-content/uploads/2022/01/%E0%B9%84%E0%B8%AB%E0%B8%A7%E0%B9%89%E0%B9%80%E0%B8%88%E0%B9%89%E0%B8%B2.jpg" class="rounded-lg shadow-lg w-full h-48 md:h-64 object-cover transform translate-y-6 transition hover:scale-105" alt="">
+                        </div>
+                    </div>
+
+                    <!-- Culture Content 3: ทิ้งกระจาด -->
+                    <div class="bg-auspicious-red/50 backdrop-blur-md border border-red-500/30 rounded-2xl p-8 md:p-12 mb-10 shadow-2xl reveal flex flex-col lg:flex-row gap-10 items-center">
+                        <div class="lg:w-1/2">
+                            <span class="text-gold font-bold tracking-widest text-sm mb-2 block">๐๓ | มหากุศลแห่งความเมตตา</span>
+                            <h3 class="text-3xl font-bold text-white mb-2">ประเพณีทิ้งกระจาด (ซิโกว)</h3>
+                            <p class="text-light-gold text-lg mb-4 font-body tracking-wider">中元节 / 施孤 <span class="text-sm ml-2 text-gray-300">(Zhōngyuánjié / Shīgū)</span></p>
+                            <p class="text-gray-200 leading-relaxed mb-6 text-lg">
+                                จัดขึ้นในช่วงเดือน 7 ของจีน (เทศกาลสารทจีน) เป็นประเพณีที่สะท้อนถึงความกตัญญูต่อบรรพบุรุษและความเมตตาต่อเพื่อนมนุษย์ โดยศาลเจ้าจะจัดพิธีสวดมหากุศล อุทิศให้ดวงวิญญาณไร้ญาติ และแจกทานให้แก่ผู้ยากไร้
+                            </p>
+                            <ul class="space-y-3 text-gray-300">
+                                <li><i class="fa-solid fa-bowl-rice text-gold mr-3"></i> <strong>การแจกทาน (เทกระจาด):</strong> มอบข้าวสารอาหารแห้งและของใช้ให้แก่ประชาชน</li>
+                                <li><i class="fa-solid fa-book-quran text-gold mr-3"></i> <strong>พิธีสวดกงเต๊ก:</strong> พระสงฆ์จีนนิกายสวดมนต์เพื่อโปรดดวงวิญญาณ</li>
+                                <li><i class="fa-solid fa-fire-flame-curved text-gold mr-3"></i> <strong>เผากระดาษเงินกระดาษทอง:</strong> การส่งของใช้และเงินทองไปให้บรรพชนในปรโลก</li>
+                            </ul>
+                        </div>
+                        <div class="lg:w-1/2 w-full grid grid-cols-2 gap-4">
+                            <img src="https://www.chinatalks.co/wp-content/uploads/2025/08/%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B9%80%E0%B8%9E%E0%B8%93%E0%B8%B5%E0%B8%97%E0%B8%B4%E0%B9%89%E0%B8%87%E0%B8%81%E0%B8%A3%E0%B8%B0%E0%B8%88%E0%B8%B2%E0%B8%94.png" class="rounded-lg shadow-lg w-full h-48 md:h-64 object-cover transform transition hover:scale-105" alt="">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBAJh_5_dU8aqBzcm_ZAPPeZ7LqsFejuVmEg&s" class="rounded-lg shadow-lg w-full h-48 md:h-64 object-cover transform translate-y-6 transition hover:scale-105" alt="">
+                        </div>
+                    </div>
+
+                    <!-- Culture Content 4: งานสมโภชและงิ้ว (สลับฝั่ง) -->
+                    <div class="bg-auspicious-red/50 backdrop-blur-md border border-red-500/30 rounded-2xl p-8 md:p-12 shadow-2xl reveal flex flex-col lg:flex-row-reverse gap-10 items-center">
+                        <div class="lg:w-1/2">
+                            <span class="text-gold font-bold tracking-widest text-sm mb-2 block">๐๔ | มหรสพและแรงศรัทธา</span>
+                            <h3 class="text-3xl font-bold text-white mb-2">งานสมโภชและศิลปะการแสดงงิ้ว</h3>
+                            <p class="text-light-gold text-lg mb-4 font-body tracking-wider">神庙庆典与戏曲 <span class="text-sm ml-2 text-gray-300">(Shénmiào qìngdiǎn yǔ xìqǔ)</span></p>
+                            <p class="text-gray-200 leading-relaxed mb-6 text-lg">
+                                ในวันคล้ายวันเกิดของเทพเจ้าองค์ประธานของแต่ละศาลเจ้า (วันแซยิด) จะมีการจัดงานเฉลิมฉลองอย่างยิ่งใหญ่ และสิ่งที่ขาดไม่ได้คือ "อุปรากรจีน หรือ งิ้ว" เพื่อถวายแด่องค์เทพเจ้า ซึ่งเป็นการอนุรักษ์ศิลปะการแสดงโบราณให้คนรุ่นหลังได้สัมผัส
+                            </p>
+                            <ul class="space-y-3 text-gray-300">
+                                <li><i class="fa-solid fa-masks-theater text-gold mr-3"></i> <strong>การแสดงงิ้วแก้บน:</strong> ศิลปะการแสดงโบราณที่แต่งหน้าและชุดอย่างงดงาม</li>
+                                <li><i class="fa-solid fa-gavel text-gold mr-3"></i> <strong>ประมูลสิ่งของมงคล:</strong> การประมูลตะเกียงและส้มมงคลเพื่อนำรายได้บำรุงศาลเจ้า</li>
+                                <li><i class="fa-solid fa-store text-gold mr-3"></i> <strong>งานออกร้าน:</strong> ตลาดนัดยามค่ำคืนที่มีอาหารพื้นเมืองและขนมโบราณมากมาย</li>
+                            </ul>
+                        </div>
+                        <div class="lg:w-1/2 w-full grid grid-cols-2 gap-4">
+                            <img src="https://storage-wp.thaipost.net/2024/05/11-10.jpg" class="rounded-lg shadow-lg w-full h-48 md:h-64 object-cover transform transition hover:scale-105" alt="">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo3Sbjn9NoOItpw_ybGH3mh-dicl1Xx3hkIA&s" class="rounded-lg shadow-lg w-full h-48 md:h-64 object-cover transform translate-y-6 transition hover:scale-105" alt="">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CONTACT PAGE ==================== -->
+        <div id="contact" class="page-section">
+            <div class="py-24 relative bg-[url('https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=1920')] bg-cover bg-fixed bg-center">
+                <!-- Overlay -->
+                <div class="absolute inset-0 bg-white/90 backdrop-blur-sm"></div>
+                
+                <div class="max-w-7xl mx-auto px-4 relative z-10">
+                    <div class="text-center mb-16 reveal">
+                        <h2 class="text-4xl md:text-5xl font-bold text-auspicious-red mb-4 inline-block relative">
+                            ติดต่อเรา / ขอข้อมูลเพิ่มเติม
+                            <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gold"></div>
+                        </h2>
+                        <p class="text-2xl text-gray-500 mt-6 font-body tracking-wider">联系我们 <span class="text-lg ml-2">(Liánxì wǒmen)</span></p>
+                        <p class="text-gray-600 mt-4 text-lg">ยินดีรับฟังข้อเสนอแนะ หรือร่วมแบ่งปันข้อมูลมรดกทางวัฒนธรรม</p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden reveal border border-gold/20 flex flex-col lg:flex-row">
+                        
+                        <!-- Contact Info Side -->
+                        <div class="lg:w-2/5 bg-gradient-to-br from-auspicious-red to-[#4a0000] text-white p-10 md:p-14 relative overflow-hidden">
+                            <!-- Background Decor -->
+                            <div class="absolute -bottom-20 -right-20 opacity-10 transform rotate-12 transition-transform duration-700 hover:rotate-45">
+                                <i class="fa-solid fa-yin-yang text-[250px]"></i>
+                            </div>
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-[url('https://www.transparenttextures.com/patterns/chinese-gong.png')] opacity-20"></div>
+
+                            <h3 class="text-3xl font-bold text-gold mb-8 relative z-10 font-heading">ข้อมูลติดต่อ</h3>
+                            
+                            <div class="space-y-8 relative z-10 text-lg">
+                                <div class="flex items-start group">
+                                    <div class="w-14 h-14 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mr-5 shrink-0 shadow-lg text-gold border border-white/20 group-hover:bg-gold group-hover:text-dark-red group-hover:scale-110 transition-all duration-300">
+                                        <i class="fa-solid fa-location-dot text-xl"></i>
+                                    </div>
+                                    <div class="transform group-hover:translate-x-2 transition-transform duration-300">
+                                        <p class="font-bold text-gold mb-1">ที่ตั้ง <span class="text-sm font-normal text-white/60 ml-2">地址</span></p>
+                                        <p class="text-gray-200 font-body leading-relaxed">ศูนย์อนุรักษ์มรดกวัฒนธรรมศาลเจ้า<br>ต.ทับเที่ยง อ.เมือง จ.ตรัง 92000</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start group">
+                                    <div class="w-14 h-14 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mr-5 shrink-0 shadow-lg text-gold border border-white/20 group-hover:bg-gold group-hover:text-dark-red group-hover:scale-110 transition-all duration-300">
+                                        <i class="fa-solid fa-phone text-xl"></i>
+                                    </div>
+                                    <div class="transform group-hover:translate-x-2 transition-transform duration-300">
+                                        <p class="font-bold text-gold mb-1">โทรศัพท์ <span class="text-sm font-normal text-white/60 ml-2">电话</span></p>
+                                        <p class="text-gray-200 font-body leading-relaxed">097-020-6261</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start group">
+                                    <div class="w-14 h-14 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mr-5 shrink-0 shadow-lg text-gold border border-white/20 group-hover:bg-gold group-hover:text-dark-red group-hover:scale-110 transition-all duration-300">
+                                        <i class="fa-solid fa-envelope text-xl"></i>
+                                    </div>
+                                    <div class="transform group-hover:translate-x-2 transition-transform duration-300">
+                                        <p class="font-bold text-gold mb-1">อีเมล <span class="text-sm font-normal text-white/60 ml-2">电子邮件</span></p>
+                                        <p class="text-gray-200 font-body leading-relaxed break-all">nrutmchayphechrsud@gmail.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Form Side -->
+                        <div class="lg:w-3/5 p-10 md:p-14 bg-[#fcf9f2] relative">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2 font-heading">ส่งข้อความถึงเรา</h3>
+                            <p class="text-gray-500 mb-8 font-body">กรอกข้อมูลด้านล่างเพื่อติดต่อสอบถาม หรือส่งข้อเสนอแนะ</p>
+                            
+                            <form id="contactForm" class="space-y-6 relative z-10">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wider" for="name">ชื่อ - นามสกุล</label>
+                                        <input type="text" id="name" class="w-full px-5 py-4 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all shadow-sm font-body" placeholder="กรอกชื่อของคุณ">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wider" for="email">อีเมล</label>
+                                        <input type="email" id="email" class="w-full px-5 py-4 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all shadow-sm font-body" placeholder="your@email.com">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-bold mb-2 text-sm uppercase tracking-wider" for="message">ข้อความ</label>
+                                    <textarea id="message" rows="5" class="w-full px-5 py-4 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all shadow-sm font-body resize-none" placeholder="พิมพ์ข้อความที่ต้องการส่งถึงเรา..."></textarea>
+                                </div>
+                                <button type="submit" class="w-full md:w-auto px-10 bg-gradient-to-r from-gold to-yellow-500 text-dark-red font-bold py-4 rounded-xl shadow-[0_10px_20px_-10px_rgba(212,175,55,0.6)] hover:shadow-[0_15px_25px_-10px_rgba(212,175,55,0.8)] transition-all transform hover:-translate-y-1 hover:scale-[1.02] flex items-center justify-center text-lg">
+                                    ส่งข้อความ <i class="fa-solid fa-paper-plane ml-3"></i>
+                                </button>
+                            </form>
+                            
+                            <!-- Success Message Box (Hidden by default) -->
+                            <div id="successMessage" class="hidden mt-8 bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-xl shadow-sm flex items-center" role="alert">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4 text-green-600 shrink-0">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold font-heading">ส่งข้อความสำเร็จ!</p>
+                                    <p class="font-body text-sm mt-1">ขอบคุณสำหรับการติดต่อ เราจะรีบตอบกลับโดยเร็วที่สุดครับ</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SHRINE DETAIL PAGE (DYNAMIC) ==================== -->
+        <div id="shrine-detail" class="page-section bg-gray-50">
+            <!-- Hero Banner Dynamic -->
+            <div id="detail-hero" class="relative h-[60vh] flex items-end pb-16 bg-cover bg-center transition-all duration-500" style="background-image: url('');">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                <div class="max-w-7xl mx-auto px-4 w-full relative z-10">
+                    <button onclick="switchPage('shrines')" class="bg-black/40 backdrop-blur-sm text-gold hover:text-white border border-gold/50 px-4 py-2 rounded-full mb-6 transition-all flex items-center group shadow-lg hover:bg-auspicious-red">
+                        <i class="fa-solid fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform"></i> กลับไปยังหน้ารวมศาลเจ้า
+                    </button>
+                    <h1 id="detail-title" class="text-5xl md:text-6xl font-bold text-white mb-2 drop-shadow-lg reveal">ชื่อศาลเจ้า</h1>
+                    <p id="detail-chinese" class="text-2xl text-gold mb-4 font-body tracking-widest drop-shadow-md reveal" style="transition-delay: 50ms;">中文名称</p>
+                    <p id="detail-location" class="text-light-gold text-xl drop-shadow-md reveal" style="transition-delay: 100ms;"><i class="fa-solid fa-location-dot mr-2"></i>อ.เมือง จ.ตรัง</p>
+                </div>
+            </div>
+
+            <!-- Detail Content -->
+            <div class="max-w-5xl mx-auto px-4 py-16">
+                <div class="bg-white rounded-2xl shadow-2xl -mt-24 relative z-20 p-8 md:p-14 border-t-8 border-auspicious-red reveal" style="transition-delay: 200ms;">
+                    <h2 class="text-3xl font-bold text-auspicious-red mb-6 border-b-2 border-gray-100 pb-4 flex items-center">
+                        <i class="fa-solid fa-book-open text-gold mr-3"></i> ข้อมูลศาลเจ้า
+                    </h2>
+                    <p id="detail-description" class="text-gray-700 text-lg md:text-xl leading-relaxed mb-10">
+                        รายละเอียด...
+                    </p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fa-solid fa-clock-rotate-left text-auspicious-red mr-3"></i> ประวัติความเป็นมา
+                    </h3>
+                    <div class="bg-red-50 p-8 rounded-xl border-l-4 border-gold shadow-inner mb-12">
+                        <p id="detail-history" class="text-gray-700 leading-relaxed text-lg">
+                            ประวัติ...
+                        </p>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fa-solid fa-images text-auspicious-red mr-3"></i> แกลเลอรีภาพถ่าย
+                    </h3>
+                    <div id="detail-gallery" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Dynamic Images will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#2a0800] text-gray-300 py-12 border-t-4 border-gold">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div>
+                <div class="flex items-center justify-center md:justify-start mb-4">
+                    <i class="fa-solid fa-yin-yang text-gold text-2xl mr-2"></i>
+                    <span class="font-bold text-xl text-white">มรดกศาลเจ้า<span class="text-gold">เมืองตรัง</span></span>
+                </div>
+                <p class="text-sm text-gray-400">โครงการอนุรักษ์และเผยแพร่วัฒนธรรมความเชื่อ สถาปัตยกรรม และประเพณีอันดีงามของชาวไทยเชื้อสายจีนในจังหวัดตรัง</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 text-lg border-b border-gray-700 pb-2 inline-block">ลิงก์ลัด</h4>
+                <ul class="space-y-2">
+                    <li><button onclick="switchPage('home')" class="hover:text-gold transition-colors">หน้าแรก</button></li>
+                    <li><button onclick="switchPage('history')" class="hover:text-gold transition-colors">ประวัติความเป็นมา</button></li>
+                    <li><button onclick="switchPage('shrines')" class="hover:text-gold transition-colors">ศาลเจ้าที่แนะนำ</button></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 text-lg border-b border-gray-700 pb-2 inline-block">สนับสนุนโดย</h4>
+                <p class="text-sm mb-2">เครือข่ายอนุรักษ์วัฒนธรรมท้องถิ่น</p>
+                <p class="text-sm">ภาพประกอบเพื่อการศึกษาและการอนุรักษ์</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
+            <p>&copy; 2024 มรดกศาลเจ้าเมืองตรัง. All rights reserved. Designed with <i class="fa-solid fa-heart text-auspicious-red"></i> for Trang.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // --- Shrine Data Setup ---
+        const shrineData = {
+            'kew-ong': {
+                name: 'ศาลเจ้ากิวอ่องเอี่ย',
+                chineseName: '九皇爷庙 (Jiǔhuángyé miào)',
+                image: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=1200',
+                location: 'ถ.ท่ากลาง ต.ทับเที่ยง อ.เมือง จ.ตรัง',
+                description: 'ศาลเจ้ากิวอ่องเอี่ย เป็นศาลเจ้าเก่าแก่คู่บ้านคู่เมืองตรังมายาวนานกว่า 100 ปี มีความสำคัญอย่างยิ่งในฐานะศูนย์กลางการจัดงานประเพณีถือศีลกินผัก (เจี๊ยะฉ่าย) ที่ยิ่งใหญ่ที่สุดของจังหวัด ภายในประดิษฐานองค์กิวอ่องไต่เต่ (พระราชาธิราช 9 พระองค์) ผู้เป็นองค์ประธานในการกินเจ สถาปัตยกรรมของศาลเจ้ามีความวิจิตรงดงามตามแบบฉบับจีนดั้งเดิม ทั้งหลังคามังกรคู่ล่อแก้ว เสามังกรพัน และภาพจิตรกรรมฝาผนังที่บอกเล่าเรื่องราวในพงศาวดารจีน ท่ามกลางบรรยากาศที่อบอวลไปด้วยควันธูปและแรงศรัทธา',
+                history: 'ก่อตั้งขึ้นโดยกลุ่มชาวจีนที่อพยพมาตั้งรกรากในเมืองตรังยุคแรกเริ่ม เดิมเป็นเพียงศาลเจ้าเล็กๆ ก่อนจะได้รับการบูรณะและขยายขนาดใหญ่ขึ้นด้วยแรงศรัทธาและการร่วมบริจาคของชาวบ้านและคหบดีในท้องถิ่น ศาลเจ้าแห่งนี้เป็นเสมือนศูนย์รวมจิตใจและสะท้อนให้เห็นถึงความเจริญรุ่งเรืองของชุมชนชาวจีนในอดีตจนถึงปัจจุบัน',
+                gallery: [
+                    'https://images.unsplash.com/photo-1510006734123-2fc165a2dffb?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1628157745771-5511b849319e?auto=format&fit=crop&q=80&w=800'
+                ]
+            },
+            'tam-kong': {
+                name: 'ศาลเจ้าท่ามกงเยี่ย',
+                chineseName: '谭公爷庙 (Tángōngyé miào)',
+                image: 'https://images.unsplash.com/photo-1516089369976-79b88950d88d?auto=format&fit=crop&q=80&w=1200',
+                location: 'ถ.เพลินพิทักษ์ ต.ทับเที่ยง อ.เมือง จ.ตรัง',
+                description: 'ศาลเจ้าท่ามกงเยี่ย เป็นศาลเจ้าของชาวจีนแคะ (ฮากกา) ที่มีความศักดิ์สิทธิ์และเป็นที่เคารพศรัทธาของชาวตรังตลอดจนจังหวัดใกล้เคียงอย่างมาก โดยเฉพาะชื่อเสียงในเรื่องการขอพรด้านสุขภาพ การรักษาโรคภัยไข้เจ็บ การขอบุตร และการปัดเป่าสิ่งชั่วร้าย องค์ประธานคือ "ท่ามกงเยี่ย" หรือ พระอรหันต์ท่ามกง ผู้มีเมตตาและเชี่ยวชาญด้านยาสมุนไพร ภายในศาลเจ้าเงียบสงบ ร่มเย็น เหมาะแก่การมาทำบุญและตั้งจิตอธิษฐาน',
+                history: 'ตำนานเล่าว่าองค์ท่ามกงเยี่ยเป็นเด็กอัจฉริยะที่สำเร็จอรหันต์ตั้งแต่อายุเพียง 12 ปี ชาวจีนแคะที่อพยพมายังเมืองตรังได้อัญเชิญผงธูปและรูปแกะสลักมาจากมณฑลกวางตุ้งเพื่อประดิษฐานไว้เป็นเครื่องยึดเหนี่ยวจิตใจ ทุกปีในวันคล้ายวันเกิดขององค์ท่ามกงเยี่ย จะมีผู้คนหลั่งไหลมากราบไหว้อย่างเนืองแน่น',
+                gallery: [
+                    'https://images.unsplash.com/photo-1549887552-cb1071d3e5ca?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1610486950275-ce4ee5dbfbfa?auto=format&fit=crop&q=80&w=800'
+                ]
+            },
+            'muen-ram': {
+                name: 'ศาลเจ้าพ่อหมื่นราม',
+                chineseName: '万兰神庙 (Wànlán shénmiào)',
+                image: 'https://images.unsplash.com/photo-1579493941427-46dc0db12330?auto=format&fit=crop&q=80&w=1200',
+                location: 'ถ.รัษฎา ต.ทับเที่ยง อ.เมือง จ.ตรัง',
+                description: 'ศาลเจ้าพ่อหมื่นราม เป็นอีกหนึ่งศาลเจ้าหลักที่มีบทบาทสำคัญในการจัดงานเทศกาลถือศีลกินผักร่วมกับศาลเจ้าอื่นๆ ในเมืองตรัง โดดเด่นเป็นพิเศษด้วยขบวนแห่พระรอบเมือง (อิ้วเก้ง) ที่มีม้าทรงแสดงอภินิหารจำนวนมากที่สุดแห่งหนึ่ง ศาลเจ้าแห่งนี้มีพื้นที่กว้างขวาง สถาปัตยกรรมเน้นสีแดง-ทองอันเป็นมงคล พร้อมเสามังกรที่แกะสลักอย่างวิจิตรตระการตา เป็นศูนย์รวมศรัทธาของชาวบ้านและลูกหลานที่เดินทางกลับมาในช่วงเทศกาล',
+                history: 'คำว่า "หมื่นราม" เชื่อว่ามาจากการตั้งชื่อเพื่อให้สอดคล้องกับบริบทของสังคมไทย โดยผสมผสานความเชื่อแบบจีนเข้ากับชื่อที่คนไทยคุ้นเคย ศาลเจ้าแห่งนี้แสดงให้เห็นถึงการกลมกลืนทางวัฒนธรรมระหว่างไทย-จีนในท้องถิ่นได้อย่างชัดเจน',
+                gallery: [
+                    'https://images.unsplash.com/photo-1588636254703-a442e564bd53?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1603565578768-45f850d5366a?auto=format&fit=crop&q=80&w=800'
+                ]
+            }
+        };
+
+        // --- Loader Logic ---
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    triggerReveals(); // Trigger animations for the first page
+                }, 500);
+            }, 1500); // 1.5 second artificial delay for the grand entrance effect
+        });
+
+        // --- Single Page App Navigation Logic ---
+        function switchPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show target page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Re-trigger reveal animations for the new page
+                setTimeout(triggerReveals, 100);
+            }
+
+            // Update Nav Links Active State (Ignore details page for Nav links)
+            if(pageId !== 'shrine-detail') {
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if(link.getAttribute('data-target') === pageId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        // --- Dynamic Shrine Detail Logic ---
+        function showShrineDetail(shrineId) {
+            const data = shrineData[shrineId];
+            if(!data) return;
+
+            // Update DOM Elements
+            document.getElementById('detail-hero').style.backgroundImage = `url('${data.image}')`;
+            document.getElementById('detail-title').innerText = data.name;
+            document.getElementById('detail-chinese').innerText = data.chineseName;
+            document.getElementById('detail-location').innerHTML = `<i class="fa-solid fa-location-dot mr-2"></i>${data.location}`;
+            document.getElementById('detail-description').innerText = data.description;
+            document.getElementById('detail-history').innerText = data.history;
+
+            // Update Gallery
+            const galleryContainer = document.getElementById('detail-gallery');
+            galleryContainer.innerHTML = ''; // Clear old images
+            data.gallery.forEach((imgSrc) => {
+                const imgHTML = `<img src="${imgSrc}" class="w-full h-64 object-cover rounded-xl shadow-md hover:scale-105 transition-transform duration-300 border-2 border-transparent hover:border-gold" alt="">`;
+                galleryContainer.innerHTML += imgHTML;
+            });
+
+            // Switch to detail page
+            switchPage('shrine-detail');
+        }
+
+        // --- Mobile Menu Toggle ---
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        function closeMobileMenu() {
+            menu.classList.add('hidden');
+        }
+
+        // --- Scroll Reveal Animation Logic (Intersection Observer) ---
+        function triggerReveals() {
+            const reveals = document.querySelectorAll('.page-section.active .reveal');
+            
+            // Check immediately on load/switch
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 50; // Reveal point
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        }
+
+        // Listen for scroll events on the window
+        window.addEventListener('scroll', triggerReveals);
+
+        // --- Form Submission Simulation ---
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent page reload
+            
+            // Basic validation
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            if(name && email && message) {
+                // Show success message box
+                const successMsg = document.getElementById('successMessage');
+                successMsg.classList.remove('hidden');
+                
+                // Clear form
+                this.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMsg.classList.add('hidden');
+                }, 5000);
+            } else {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วนครับ');
+            }
+        });
+
+        // --- Navbar Scroll Effect (Shrink/Change background on scroll) ---
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-xl');
+                navbar.classList.replace('h-20', 'h-16'); // Tailwind class replacement for height
+            } else {
+                navbar.classList.remove('shadow-xl');
+                navbar.classList.replace('h-16', 'h-20');
+            }
+        });
+    </script>
+</body>
+</html>
